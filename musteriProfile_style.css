@@ -1,0 +1,37 @@
+#username-holder {
+  display: grid;
+  grid-template-columns: 100%;
+  justify-self: center;
+  text-align: center;
+}
+
+#results {
+  margin-top: 25vh;
+  height: 40vh;
+}
+
+#menu {
+  margin-top: 15vh;
+  grid-template-areas: 'name  type  button';
+}
+
+#order-button {
+  border: none;
+  background-color: transparent;
+  grid-column: span 3;
+}
+
+#basket-area {
+  margin-top: 15vh;
+  grid-template-areas: 'orderedName  orderedType orderedAmount';
+}
+
+#my-orders {
+  margin-top: 15vh;
+  grid-template-areas: 'myOrderName  myOrderAmount myOrderDate myOrderDeadline';
+}
+
+#profile-actions {
+  border: none;
+  background-color: transparent;
+}

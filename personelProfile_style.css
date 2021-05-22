@@ -1,0 +1,34 @@
+#username-holder {
+  display: grid;
+  grid-template-columns: 100%;
+  justify-self: center;
+  text-align: center;
+}
+
+#results {
+  margin-top: 25vh;
+  height: 40vh;
+}
+
+#order-button {
+  border: none;
+  background-color: transparent;
+  grid-column: span 3;
+}
+
+#profile-actions {
+  border: none;
+  background-color: transparent;
+}
+
+#all-orders {
+  grid-template-columns: 45vw;
+}
+
+.entry-div {
+  padding-bottom: 70px;
+  background-color: transparent;
+  row-gap: 35px;
+  border: none;
+  grid-template-columns: auto auto auto !important;
+}

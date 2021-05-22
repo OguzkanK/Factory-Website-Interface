@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="musteriProfile_style.css" />
+    <title>Profile</title>
+  </head>
+  <body>
+    <div class="top-bar grid-container">
+      <button class="grid-item" onclick="window.location = 'index.html'">
+        Giriş sayfasına geri dön
+      </button>
+      <button id="back-from-salables" class="grid-item hidden">
+        Profile Geri Dön
+      </button>
+      <button id="back-from-my-orders" class="grid-item hidden">
+        Profile Geri Dön
+      </button>
+      <button id="basket" class="grid-item hidden">Sepetim</button>
+    </div>
+    <div id="results" class="grid-container">
+      <div class="grid-item" id="username-holder"></div>
+      <div id="profile-actions" class="grid-item">
+        <button id="list-items" class="grid-item">Satın Al</button>
+        <button id="list-orders" class="grid-item">Siparişlerim</button>
+      </div>
+    </div>
+
+    <div id="my-orders" class="grid-container grid-hide"></div>
+
+    <div id="menu" class="grid-hide grid-container"></div>
+
+    <div id="basket-area" class="grid-hide grid-container">
+      <form
+        id="order-button"
+        action="http://localhost:8080/POST/orders"
+        method="POST"
+        class="grid-item hidden"
+      >
+        <input type="hidden" name="sepet" id="sepet-input" value="" />
+        <input type="hidden" name="userId" id="user-id" value="" />
+        <button type="submit" class="grid-item">Sipariş Ver</button>
+      </form>
+    </div>
+  </body>
+  <script src="musteriProfile_script.js"></script>
+</html>

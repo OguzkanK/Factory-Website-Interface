@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="shared.css" />
+    <link rel="stylesheet" href="index_style.css" />
+    <title>Login</title>
+  </head>
+  <body>
+    <div id="login-select" class="grid-container">
+      <button id="musteri-login-btn" class="grid-item">Müşteri Girişi</button>
+      <button id="personel-login-btn" class="grid-item">Personel Girişi</button>
+    </div>
+    <form
+      id="musteri-login"
+      class="grid-hide"
+      method="POST"
+      action="http://localhost:8080/POST/musteri"
+    >
+      <div class="grid-item login-area">
+        <label for="musteri-username">Username:</label>
+        <input
+          name="name"
+          id="musteri-username"
+          type="text"
+          placeholder="Username"
+          required
+        />
+      </div>
+      <div class="grid-item login-area">
+        <label for="musteri-password">Password:</label>
+        <input
+          name="password"
+          id="musteri-password"
+          type="password"
+          placeholder="Password"
+          required
+        />
+      </div>
+      <button
+        type="reset"
+        onclick="backToSelection('musteri-login')"
+        class="grid-item back-button"
+      >
+        Back
+      </button>
+      <button type="submit" class="grid-item">Submit</button>
+    </form>
+    <form
+      id="personel-login"
+      class="grid-hide"
+      method="POST"
+      action="http://localhost:8080/POST/personel"
+    >
+      <div class="grid-item login-area">
+        <label for="personel-username">Username:</label>
+        <input
+          name="name"
+          id="personel-username"
+          type="text"
+          placeholder="Username"
+          required
+        />
+      </div>
+      <div class="grid-item login-area">
+        <label for="personel-password">Password:</label>
+        <input
+          name="password"
+          ,
+          id="personel-password"
+          type="password"
+          placeholder="Password"
+          required
+        />
+      </div>
+      <button
+        type="reset"
+        onclick="backToSelection('personel-login')"
+        class="grid-item back-button"
+      >
+        Back
+      </button>
+      <button type="submit" class="grid-item">Submit</button>
+    </form>
+  </body>
+  <script src="loginPage.js"></script>
+</html>
