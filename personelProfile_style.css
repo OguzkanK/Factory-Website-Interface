@@ -7,7 +7,7 @@
 
 #results {
   margin-top: 25vh;
-  height: 40vh;
+  height: 55vh;
 }
 
 #order-button {
@@ -22,6 +22,12 @@
 }
 
 #all-orders {
+  grid-template-columns: 45vw;
+  height: 0;
+  margin: 0;
+}
+
+#all-items {
   grid-template-columns: 45vw;
   height: 0;
   margin: 0;
