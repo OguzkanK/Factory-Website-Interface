@@ -23,6 +23,14 @@
 
 #all-orders {
   grid-template-columns: 45vw;
+  height: 0;
+  margin: 0;
+}
+
+#all-machines {
+  margin: 0;
+  height: 0;
+  grid-template-columns: 45vw;
 }
 
 .entry-div {
