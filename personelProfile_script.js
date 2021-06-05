@@ -54,8 +54,28 @@ const fillAllOrders = function (responseJson) {
 
         const shipping = document.createElement("div");
         shipping.classList.add("grid-item");
-        if (!entry[i].shipping) shipping.textContent = entry[i].deadlineDate;
-        else shipping.textContent = "Shipped";
+        if (!entry[i].shipping) {
+          const production_Btn = document.createElement("button");
+          production_Btn.classList.add("grid-item");
+          production_Btn.classList.add("production-btn");
+          production_Btn.textContent = "Üretim listesine ekle";
+
+          production_Btn.addEventListener("click", function () {
+            const [, ...arrayToSend] = entry.reverse();
+            this.disabled = true;
+            this.style.backgroundColor = "grey";
+            this.style.cursor = "default";
+            this.textContent = "Eklendi";
+            addOperationToPlan(entry[0].orderId, arrayToSend);
+          });
+
+          const deadlineDate = document.createElement("p");
+          deadlineDate.textContent = entry[i].deadlineDate;
+
+          shipping.style.gridTemplateRows = "minmax(30px, auto)";
+          shipping.appendChild(deadlineDate);
+          shipping.appendChild(production_Btn);
+        } else shipping.textContent = "Shipped";
 
         entryDiv.appendChild(customersName);
         entryDiv.appendChild(orderDate);
@@ -101,68 +121,85 @@ const getAllOperations = function () {
 };
 
 const fillMachineList = function (responseJson) {
-  let varTime = 0;
-  let templateRows = "75px";
+  let wcId = 0;
+  let order;
+  templateRows = "80px";
   const allMachinesTemplateRows = [];
   for (const entry of responseJson) {
+    order = false;
     const entryDiv = document.createElement("div");
     entryDiv.classList.add("grid-item");
     entryDiv.classList.add("entry-div");
-    const completeTime = document.createElement("div");
 
     for (let i = entry.length - 1; i > -1; i--) {
       if (i === entry.length - 1) {
-        completeTime.classList.add("grid-item");
-        varTime = entry[i].completeTime;
-        completeTime.textContent = varTime;
+        const wcName = document.createElement("div");
+        wcName.classList.add("grid-item");
+        wcName.textContent = entry[i].wcName;
 
-        entryDiv.appendChild(completeTime);
-        entryDiv.appendChild(document.createElement("div"));
-        entryDiv.appendChild(document.createElement("div"));
-      } else {
-        if (Object.keys(entry[i]).length % 2 === 1) {
-          const wcName = document.createElement("div");
-          wcName.classList.add("grid-item");
-          wcName.textContent = entry[i].workcenterName;
+        const wcId = document.createElement("div");
+        wcId.classList.add("grid-item");
+        wcId.textContent = entry[i].wcId;
 
-          const optName = document.createElement("div");
-          optName.classList.add("grid-item");
-          optName.textContent = entry[i].operationName;
-
-          const workTime = document.createElement("div");
-          workTime.classList.add("grid-item");
-          workTime.textContent = entry[i].workTime;
-
-          entryDiv.appendChild(wcName);
-          entryDiv.appendChild(optName);
-          entryDiv.appendChild(workTime);
-          templateRows += ` 75px`;
-
-          if (entry[i].workTime === "-")
-            completeTime.textContent = varTime + ", Dolu makineler var";
-        } else {
-          const spAmount = document.createElement("div");
-          spAmount.classList.add("grid-item");
-          spAmount.textContent = entry[i].subproductAmount;
-
-          const spName = document.createElement("div");
-          spName.classList.add("grid-item");
-          spName.textContent = entry[i].subproductName;
-
-          entryDiv.appendChild(spName);
-          entryDiv.appendChild(spAmount);
-          entryDiv.appendChild(document.createElement("div"));
-          templateRows += ` 75px`;
+        if (!order) {
+          wcName.style.backgroundColor = "rgb(245, 184, 105)";
+          wcId.style.backgroundColor = "rgb(245, 184, 105)";
         }
+        entryDiv.appendChild(wcId);
+        entryDiv.appendChild(wcName);
+
+        if (!entry[i].activity) {
+          const activityLabel = document.createElement("div");
+          activityLabel.classList.add("grid-item");
+          activityLabel.textContent = "Workcenter Müsait";
+
+          if (!order) {
+            activityLabel.style.backgroundColor = "rgb(245, 184, 105)";
+          }
+
+          entryDiv.appendChild(activityLabel);
+        } else entryDiv.appendChild(document.createElement("div"));
+      } else {
+        const productName = document.createElement("div");
+        productName.classList.add("grid-item");
+        productName.textContent = entry[i].productName;
+
+        const productAmount = document.createElement("div");
+        productAmount.classList.add("grid-item");
+        productAmount.textContent = entry[i].amount;
+
+        const operationName = document.createElement("div");
+        operationName.classList.add("grid-item");
+        operationName.textContent = entry[i].operationName;
+
+        const operationTime = document.createElement("div");
+        operationTime.classList.add("grid-item");
+        operationTime.textContent = entry[i].time;
+
+        if (!order) {
+          productName.style.backgroundColor = "rgb(245, 184, 105)";
+          productAmount.style.backgroundColor = "rgb(245, 184, 105)";
+          operationName.style.backgroundColor = "rgb(245, 184, 105)";
+          operationTime.style.backgroundColor = "rgb(245, 184, 105)";
+        }
+
+        entryDiv.appendChild(productName);
+        entryDiv.appendChild(productAmount);
+        entryDiv.appendChild(document.createElement("div"));
+        entryDiv.appendChild(operationName);
+        entryDiv.appendChild(operationTime);
+        entryDiv.appendChild(document.createElement("div"));
+        templateRows += ` 80px`;
       }
+      order = !order;
     }
     allMachinesTemplateRows.push(
-      `${entry.length * 75 + (entry.length + 1) * 20 + 400}`
+      `${entry.length * 150 + (entry.length + 1) * 20 + 400}`
     );
     entryDiv.style.gridTemplateRows = templateRows;
-    templateRows = " 75px";
+    templateRows = " 80px";
     allMachines_Area.appendChild(entryDiv);
-    allMachinesHeight += entry.length * 75 + (entry.length + 1) * 20 + 390;
+    allMachinesHeight += entry.length * 150 + (entry.length + 1) * 20 + 400;
   }
   templateRows = "";
   for (const rows of allMachinesTemplateRows) templateRows += `${rows}px `;
@@ -200,7 +237,30 @@ const fillItemList = function (responseJson) {
 
         const salable = document.createElement("div");
         salable.classList.add("grid-item");
-        salable.textContent = object.salable;
+        salable.style.justifyItems = "center";
+        salable.style.gridTemplateRows = "40px";
+
+        const salableText = document.createElement("p");
+        salableText.textContent = object.salable;
+
+        const salable_Btn = document.createElement("button");
+        salable_Btn.classList.add("grid-item");
+        salable_Btn.classList.add("salable-btn");
+        salable_Btn.textContent = object.salable
+          ? "Satılamaz yap."
+          : "Satılabilir yap";
+
+        salable_Btn.addEventListener("click", function () {
+          salable_Btn.textContent = !object.salable
+            ? "Satılamaz yap."
+            : "Satılabilir yap";
+          object.salable = !object.salable;
+          salableText.textContent = `${object.salable}`;
+          changeSalability(object.productName, object.salable);
+        });
+
+        salable.appendChild(salableText);
+        salable.appendChild(salable_Btn);
         entryDiv.appendChild(productName);
         entryDiv.appendChild(productType);
         entryDiv.appendChild(salable);
@@ -249,6 +309,31 @@ const fillItemList = function (responseJson) {
   templateRows = "";
   for (const rows of allItemsTemplateRows) templateRows += `${rows}px `;
   allItems_Area.style.gridTemplateRows = templateRows;
+};
+
+const changeSalability = function (name, newData) {
+  let targetJson = `[{name: ${name}, salable: ${newData}}]`;
+  let xhttpPost = new XMLHttpRequest();
+  xhttpPost.open("POST", `http://localhost:8080/POST/changeSalability`, true);
+  xhttpPost.setRequestHeader("Content-Type", "application/json");
+  xhttpPost.send(targetJson);
+};
+
+const addOperationToPlan = function (orderId, arrayToSend) {
+  let targetJson = [];
+  for (const entry of arrayToSend) {
+    targetJson.push(
+      `{productName: ${entry.productName}, amount: ${entry.amount}, orderId: ${orderId}}`
+    );
+  }
+  let xhttpPost = new XMLHttpRequest();
+  xhttpPost.open("POST", `http://localhost:8080/POST/addOperationToPlan`, true);
+  xhttpPost.setRequestHeader("Content-Type", "application/json");
+  xhttpPost.send(targetJson);
+  xhttpPost.onreadystatechange = function () {
+    if (this.readyState === 4 && this.status === 200) {
+    }
+  };
 };
 
 getAllItems();

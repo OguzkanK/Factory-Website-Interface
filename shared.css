@@ -26,7 +26,6 @@ body {
 button {
   border-radius: 20px;
   filter: drop-shadow(0 10px 4px #3d2300);
-  grid-template-columns: 100%;
   font-size: 35px;
   background-color: #f0e3ca;
   color: #1b1a17;
@@ -62,7 +61,7 @@ button:active {
   margin: 10px;
   border: 3px solid #333;
   background-color: #f0e3ca;
-  grid-template-columns: 50% 50%;
+  grid-template-columns: 100%;
   align-content: center;
   height: 75px;
   padding: 10px;
@@ -79,5 +78,5 @@ button:active {
   align-items: center;
   height: 120px;
   width: 100%;
-  grid-template-areas: '. . back basket ';
+  grid-template-areas: ". . back basket ";
 }

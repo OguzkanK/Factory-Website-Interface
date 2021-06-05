@@ -22,13 +22,13 @@
 }
 
 #all-orders {
-  grid-template-columns: 45vw;
+  grid-template-columns: 65vw;
   height: 0;
   margin: 0;
 }
 
 #all-items {
-  grid-template-columns: 45vw;
+  grid-template-columns: 65vw;
   height: 0;
   margin: 0;
 }
@@ -36,7 +36,7 @@
 #all-machines {
   margin: 0;
   height: 0;
-  grid-template-columns: 45vw;
+  grid-template-columns: 65vw;
 }
 
 .entry-div {
@@ -45,4 +45,27 @@
   row-gap: 35px;
   border: none;
   grid-template-columns: auto auto auto !important;
+}
+
+.entry-div .grid-item {
+  font-size: 20px;
+}
+
+.entry-div p {
+  margin-top: 5px;
+}
+
+.salable-btn {
+  font-size: 15px !important;
+  border-radius: 0;
+  height: 40px;
+  background-color: rgb(255, 219, 172);
+}
+
+.production-btn {
+  font-size: 15px !important;
+  justify-content: center;
+  border-radius: 0;
+  height: 45px;
+  background-color: rgb(255, 219, 172);
 }
