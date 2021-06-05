@@ -69,3 +69,28 @@
   height: 45px;
   background-color: rgb(255, 219, 172);
 }
+
+.dropdown-content {
+  margin-top: 50px;
+  border: none;
+  background-color: transparent !important;
+  display: none;
+  position: absolute;
+  z-index: 1;
+  font-size: 15px !important;
+  border-radius: 0;
+  height: 40px;
+  background-color: rgb(255, 219, 172);
+}
+
+.dropbtn {
+  cursor: pointer;
+  font-size: 15px !important;
+  border-radius: 0;
+  height: 40px;
+  background-color: rgb(255, 219, 172);
+}
+
+.show {
+  display: block;
+}

@@ -122,10 +122,18 @@ const getAllOperations = function () {
 
 const fillMachineList = function (responseJson) {
   let wcId = 0;
+  let currentWc = "";
+  let wcNames = [];
   let order;
   templateRows = "80px";
   const allMachinesTemplateRows = [];
+
+  for (const entryName of responseJson) {
+    wcNames.push(entryName[entryName.length - 1].wcName);
+  }
+
   for (const entry of responseJson) {
+    console.log(entry);
     order = false;
     const entryDiv = document.createElement("div");
     entryDiv.classList.add("grid-item");
@@ -133,20 +141,21 @@ const fillMachineList = function (responseJson) {
 
     for (let i = entry.length - 1; i > -1; i--) {
       if (i === entry.length - 1) {
-        const wcName = document.createElement("div");
-        wcName.classList.add("grid-item");
-        wcName.textContent = entry[i].wcName;
+        currentWc = entry[i].wcName;
+        const wcNameDiv = document.createElement("div");
+        wcNameDiv.classList.add("grid-item");
+        wcNameDiv.textContent = entry[i].wcName;
 
         const wcId = document.createElement("div");
         wcId.classList.add("grid-item");
         wcId.textContent = entry[i].wcId;
 
         if (!order) {
-          wcName.style.backgroundColor = "rgb(245, 184, 105)";
+          wcNameDiv.style.backgroundColor = "rgb(245, 184, 105)";
           wcId.style.backgroundColor = "rgb(245, 184, 105)";
         }
         entryDiv.appendChild(wcId);
-        entryDiv.appendChild(wcName);
+        entryDiv.appendChild(wcNameDiv);
 
         if (!entry[i].activity) {
           const activityLabel = document.createElement("div");
@@ -168,6 +177,40 @@ const fillMachineList = function (responseJson) {
         productAmount.classList.add("grid-item");
         productAmount.textContent = entry[i].amount;
 
+        const transferMenu = document.createElement("div");
+        transferMenu.classList.add("grid-item");
+        transferMenu.classList.add("dropdown-head");
+
+        const dropdownContent = document.createElement("div");
+        dropdownContent.classList.add("grid-item");
+        dropdownContent.classList.add("dropdown-content");
+
+        const dropbtn = document.createElement("button");
+        dropbtn.classList.add("grid-item");
+        dropbtn.classList.add("dropbtn");
+        dropbtn.textContent = "İşlemi aktar";
+        dropbtn.addEventListener("click", function () {
+          dropdownContent.classList.toggle("show");
+        });
+        transferMenu.appendChild(dropbtn);
+
+        for (const alt of entry[i].alternativeWCs) {
+          if (alt !== " ") {
+            if (currentWc !== wcNames[alt - 1]) {
+              const altBtn = document.createElement("button");
+              altBtn.classList.add("grid-item");
+              altBtn.classList.add("dropbtn");
+              altBtn.textContent = wcNames[alt - 1];
+
+              altBtn.addEventListener("click", function () {
+                transferWork(alt, entry[i].productId, entry[i].orderID);
+              });
+              dropdownContent.appendChild(altBtn);
+            }
+          }
+        }
+        transferMenu.appendChild(dropdownContent);
+
         const operationName = document.createElement("div");
         operationName.classList.add("grid-item");
         operationName.textContent = entry[i].operationName;
@@ -185,7 +228,7 @@ const fillMachineList = function (responseJson) {
 
         entryDiv.appendChild(productName);
         entryDiv.appendChild(productAmount);
-        entryDiv.appendChild(document.createElement("div"));
+        entryDiv.appendChild(transferMenu);
         entryDiv.appendChild(operationName);
         entryDiv.appendChild(operationTime);
         entryDiv.appendChild(document.createElement("div"));
@@ -317,6 +360,15 @@ const changeSalability = function (name, newData) {
   xhttpPost.open("POST", `http://localhost:8080/POST/changeSalability`, true);
   xhttpPost.setRequestHeader("Content-Type", "application/json");
   xhttpPost.send(targetJson);
+};
+
+const transferWork = function (wcId, productId, orderId) {
+  let targetJson = `[{wcId: ${wcId}, productId: ${productId}, orderId: ${orderId}}]`;
+  let xhttpPost = new XMLHttpRequest();
+  xhttpPost.open("POST", `http://localhost:8080/POST/transferWork`, true);
+  xhttpPost.setRequestHeader("Content-Type", "application/json");
+  xhttpPost.send(targetJson);
+  location.reload();
 };
 
 const addOperationToPlan = function (orderId, arrayToSend) {
